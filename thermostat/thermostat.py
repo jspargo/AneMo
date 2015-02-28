@@ -1,5 +1,8 @@
-# 04_thermomether.py
-# Updated by Jack Spargo
+# AneMo - Raspberry Pi based temperature control system
+#           for home automation
+# 
+# Updated by Jack Spargo - 28/02/2015
+# based on 04_thermomether.py by [to be added + licence]
 
 import RPi.GPIO as GPIO
 import time, math
