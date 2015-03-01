@@ -35,7 +35,6 @@ temp_lower_threshold = 17.5;
 def discharge():
     GPIO.setup(a_pin, GPIO.IN)
     GPIO.setup(b_pin, GPIO.OUT)
-    GPIO.setup(buzzer_pin, GPIO.OUT)
     GPIO.output(b_pin, False)
     time.sleep(0.01)
 
