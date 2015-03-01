@@ -4,4 +4,4 @@ from django.db import models
 
 class currentTemp(models.Model):
     temp_timestamp = models.DateTimeField('date recorded')
-    temp_val = models.IntegerField(default=0)
+    temp_val = models.DecimalField(..., max_digits=5, decimal_places=2)
