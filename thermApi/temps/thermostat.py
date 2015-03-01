@@ -70,7 +70,7 @@ def temp_from_r(R):
     T = 1/inv_T - t0
     return T * fiddle_factor
 
-def lightChange(r,g,b):
+def light_change(r,g,b):
     R_val = r * 100.0
     G_val = g * 100.0
     B_val = b * 100.0
@@ -78,7 +78,7 @@ def lightChange(r,g,b):
     greenLed.ChangeDutyCycle(G_val)
     blueLed.ChangeDutyCycle(B_val)   
 
-while True:
+def record_temp():
     temp_c = temp_from_r(read_resistance())
     reading_str = "{:.2f}".format(temp_c)
     if temp_c < temp_lower_threshold:
