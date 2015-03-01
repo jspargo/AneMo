@@ -11,7 +11,6 @@ GPIO.setmode(GPIO.BCM)
 
 a_pin = 18
 b_pin = 23
-buzzer_pin = 24
 
 red_pin = 16
 green_pin = 20
@@ -43,7 +42,6 @@ def discharge():
 def charge_time():
     GPIO.setup(b_pin, GPIO.IN)
     GPIO.setup(a_pin, GPIO.OUT)
-    GPIO.setup(buzzer_pin, GPIO.OUT)
     GPIO.output(a_pin, True)
     t1 = time.time()
     while not GPIO.input(b_pin):
@@ -73,16 +71,6 @@ def temp_from_r(R):
     T = 1/inv_T - t0
     return T * fiddle_factor
 
-def buzz(pitch, duration):
-    period = 1.0 / pitch
-    delay = period / 2
-    cycles = int(duration / pitch)
-    for n in range (200):
-	GPIO.output(buzzer_pin, True)
-	time.sleep(0.000001)
-	GPIO.output(buzzer_pin, False)
-	time.sleep(0.000001)
-
 def lightChange(r,g,b):
     R_val = r * 100.0
     G_val = g * 100.0
@@ -94,14 +82,10 @@ def lightChange(r,g,b):
 while True:
     temp_c = temp_from_r(read_resistance())
     reading_str = "{:.2f}".format(temp_c)
-    print "temp: ", reading_str
     if temp_c < temp_lower_threshold:
 	lightChange(1,0,0)
-	print "red"
     if temp_c >= temp_lower_threshold and temp_c < temp_upper_threshold:
 	lightChange(0,1,0)
-	print "green"
     if temp_c >= temp_upper_threshold:
 	lightChange(0,0,1)
-	print "blue"
     time.sleep(0.1)
