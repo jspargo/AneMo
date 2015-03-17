@@ -11,5 +11,5 @@ class currentTemp(models.Model):
     temp_val = models.DecimalField(default=0, max_digits=5, decimal_places=2)
 
     def __unicode__(self):
-        temp_string = str(temp_val)
+        temp_string = str(self.temp_val)
         return temp_string
