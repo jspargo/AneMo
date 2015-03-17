@@ -51,6 +51,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'thermApi.urls'
 
+USE_X_FORWARDED_HOST = True
+
 WSGI_APPLICATION = 'thermApi.wsgi.application'
 
 
