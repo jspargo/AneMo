@@ -81,10 +81,4 @@ def light_change(r,g,b):
 def record_temp():
     temp_c = temp_from_r(read_resistance())
     reading_str = "{:.2f}".format(temp_c)
-    if temp_c < temp_lower_threshold:
-	lightChange(1,0,0)
-    if temp_c >= temp_lower_threshold and temp_c < temp_upper_threshold:
-	lightChange(0,1,0)
-    if temp_c >= temp_upper_threshold:
-	lightChange(0,0,1)
-    time.sleep(0.1)
+    

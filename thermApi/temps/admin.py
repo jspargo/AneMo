@@ -1,3 +1,4 @@
 from django.contrib import admin
+from temps.models import currentTemp
 
-# Register your models here.
+admin.site.register(currentTemp)
