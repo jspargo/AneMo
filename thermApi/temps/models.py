@@ -11,4 +11,4 @@ class currentTemp(models.Model):
     temp_val = models.DecimalField(default=0, max_digits=5, decimal_places=2)
 
 	def __unicode__(self):
-        return "{:.2f}".temp_val
+		return "{:.2f}".temp_val
