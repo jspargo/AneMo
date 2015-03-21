@@ -4,6 +4,7 @@ from thermostat import currentTemp
 import atexit
 import datetime
 import requests
+import json
 
 app = Flask(__name__)
 
@@ -17,14 +18,13 @@ def index():
 def temp():
     django_url = "http://54.154.99.221:8000/temps/"
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    data = {'time': timestamp, 'temperature': currentTemp().record_temp()}
-    json_response = jsonify(data)
-    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = requests.post(django_url, data=data, headers=headers)
-    #if r.raise_for_status() is None:
-    #    return '<em>Status 200:</em> ' + r
-    #return 'An error has occurred'
-    return 'Finished'
+    tdata = {'time': timestamp, 'temperature': currentTemp().record_temp()}
+    tbody = json.dumps(tdata)
+    headers = {'Content-type': 'application/json'}
+    r = requests.post(django_url, data=tbody, headers=headers) 
+    if r.raise_for_status() is None:
+        return '<em>Status 200:</em> ' + tbody
+    return 'An error has occurred'
 
 def shutdown():
     currentTemp().keyboard_interupt()
