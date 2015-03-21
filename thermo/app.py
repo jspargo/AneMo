@@ -14,9 +14,12 @@ def index():
 
 @app.route('/record/')
 def temp():
+    django_url = "http://54.154.99.221:8000/temps/"
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     data = {'time': timestamp, 'temperature': currentTemp().record_temp()}
-    return jsonify(data)
+    json_response = jsonify(data)
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    r = requests.post(django_url, data=json_response, headers=headers)
 
 def shutdown():
     currentTemp().keyboard_interupt()
@@ -34,5 +37,3 @@ def shutdown_server():
     if func is None:
         raise RuntimeError('Not Running...')
     func()
-
-    
