@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from thermostat import currentTemp
 import atexit
 import datetime
+import requests
 
 app = Flask(__name__)
 
