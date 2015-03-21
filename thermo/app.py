@@ -8,12 +8,14 @@ app = Flask(__name__)
 
 @app.route('/app/')
 def index():
-    data = take_temp()
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    data = {'time': timestamp, 'temperature': currentTemp().record_temp()}
     return jsonify(data)
 
 @app.route('/record/')
 def temp():
-    data = take_temp()
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    data = {'time': timestamp, 'temperature': currentTemp().record_temp()}
     return jsonify(data)
 
 def shutdown():
@@ -33,8 +35,4 @@ def shutdown_server():
         raise RuntimeError('Not Running...')
     func()
 
-def take_temp():
-    timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    data = {'time': timestamp, 'temperature': currentTemp().record_temp()}
-    temp = currentTemp().record_temp()
-    return data
+    
