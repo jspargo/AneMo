@@ -1,6 +1,6 @@
 from django.db import models
 
-import json
+import json, datetime
 
 # Create your models here.
 
@@ -35,3 +35,9 @@ class SetTemp(models.Model):
     	temp_high = float(self.set_temp_high)
     	date = str(self.set_date)
         return u'%f to %f -- %s' % (temp_low, temp_high, date)
+
+
+class TimeConversion(str):
+	def __str__(self):
+		output = datetime.datetime.strptime(self, '%a, %d %b %Y %H:%M:%S GMT').strftime('%Y-%m-%d')
+		return output

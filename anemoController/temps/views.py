@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.template import RequestContext
+from temps.models import RecordedTemp, SetTemp
 
 import json
 
@@ -11,9 +11,13 @@ def index(request):
         p = Payload(request.body)
         temp = p.temperature
         date = p.time
-        str_temp = '<br>temp: <b>' + str(temp) + '</b>'
-        str_date = '<br>date: <b>' + str(date) + '</b>'
-        return HttpResponse('Success!  temp: ' + str_date + str_temp)
+
+        #import pdb; pdb.set_trace()
+
+        new_record = RecordedTemp(recorded_temp=temp, recorded_date=date)
+        new_record.save()
+
+        return HttpResponse('Success!  temp: ' + str(new_record.id) + ' ' + str(new_record.recorded_temp))
     return HttpResponse('POST method only')
 
 

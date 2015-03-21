@@ -8,7 +8,8 @@ app = Flask(__name__)
 
 @app.route('/app/')
 def index():
-    data = {'time': datetime.datetime.now(), 'temperature': currentTemp().record_temp()}
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    data = {'time': timestamp, 'temperature': currentTemp().record_temp()}
     temp = currentTemp().record_temp()
     return jsonify(data)
 
