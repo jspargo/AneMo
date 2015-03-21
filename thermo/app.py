@@ -20,7 +20,7 @@ def temp():
     data = {'time': timestamp, 'temperature': currentTemp().record_temp()}
     json_response = jsonify(data)
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = requests.post(django_url, data=json_response, headers=headers)
+    r = requests.post(django_url, data=data, headers=headers)
     if r.raise_for_status() is None:
         return '<em>Status 200:</em> ' + r
     return 'An error has occurred'
