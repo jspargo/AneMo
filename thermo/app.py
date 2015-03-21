@@ -8,9 +8,9 @@ app = Flask(__name__)
 
 @app.route('/app/')
 def index():
-    data = [{'time': datetime.datetime.now(), 'temperature': currentTemp().record_temp()}]
+    data = {'time': datetime.datetime.now(), 'temperature': currentTemp().record_temp()}
     temp = currentTemp().record_temp()
-    return jsonify({'temps': data})
+    return jsonify(data)
 
 def shutdown():
     currentTemp().keyboard_interupt()
