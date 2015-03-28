@@ -5,6 +5,10 @@ import atexit
 import datetime
 import requests
 import json
+import ConfigParser
+
+config = ConfigParser.RawConfigParser()
+config.read('config.cfg')
 
 app = Flask(__name__)
 
@@ -16,7 +20,9 @@ def index():
 
 @app.route('/record/')
 def temp():
-    django_url = "http://54.154.99.221:8000/temps/"
+    url = config.get('anemoController', 'url')
+    port = config.get('anemoController', 'port')
+    django_url = str(url + ':' + port + '/temps/')
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     tdata = {'time': timestamp, 'temperature': currentTemp().record_temp()}
     tbody = json.dumps(tdata)
