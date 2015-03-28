@@ -27,10 +27,13 @@ def temp():
     tdata = {'time': timestamp, 'temperature': currentTemp().record_temp()}
     tbody = json.dumps(tdata)
     headers = {'Content-type': 'application/json'}
-    r = requests.post(django_url, data=tbody, headers=headers) 
-    if r.raise_for_status() is None:
-        return '<em>Status 200:</em> ' + tbody
-    return 'An error has occurred'
+    try:
+        r = requests.post(django_url, data=tbody, headers=headers) 
+        if r.raise_for_status() is None:
+            return '<em>Status 200:</em> ' + tbody
+        return '<em>Server Error</em> - No 200 status received'
+    except requests.exceptions.RequestException:
+        return '<em>No Connection</em> - Either the server is not running, or the IP is incorrect'
 
 def shutdown():
     currentTemp().keyboard_interupt()
