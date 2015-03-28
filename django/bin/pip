@@ -1,4 +1,4 @@
-#!/Developer/AneMo/django/bin/python
+#!/home/jack/AneMo/django/bin/python2.7
 
 # -*- coding: utf-8 -*-
 import re
