@@ -33,7 +33,8 @@ def temp():
             return '<em>Status 200:</em> ' + tbody
         return '<em>Server Error</em> - No 200 status received'
     except requests.exceptions.RequestException:
-        return '<em>No Connection</em> - Either the server is not running, or the IP is incorrect'
+        return '<em>No Connection</em> - Either the server is not running, \
+        or this IP is incorrect: <strong>' + django_url + '</strong>' 
 
 def shutdown():
     currentTemp().keyboard_interupt()
