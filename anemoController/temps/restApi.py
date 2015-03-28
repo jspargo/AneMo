@@ -5,8 +5,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-class ExampleView(APIView):
-    authentication_classes = (SessionAuthentication, BasicAuthentication)
+
+class TempSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = RecordedTemp
+		fields = ('recorded_temp', 'recorded_date')
+
+
+class TempViewSet(viewsets.ModelViewSet):
+	authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, format=None):
@@ -16,13 +23,5 @@ class ExampleView(APIView):
         }
         return Response(content)
 
-
-class TempSerializer(serializers.HyperlinkedModelSerializer):
-	class Meta:
-		model = RecordedTemp
-		fields = ('recorded_temp', 'recorded_date')
-
-
-class TempViewSet(viewsets.ModelViewSet):
 	queryset = RecordedTemp.objects.all()
 	serializer_class = TempSerializer
