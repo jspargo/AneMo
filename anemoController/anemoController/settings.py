@@ -10,14 +10,20 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import ConfigParser
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# Use config file to read in keys and config settings
+config = ConfigParser.RawConfigParser()
+config.read('config.cfg')
+secretKey = config.get('anemoController', 'secret_key')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6$3f$prrrmpjy$5)0qbcjd#6a1u-_ossl28(cae_vlj&%hc%*n'
+SECRET_KEY = secretKey
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
