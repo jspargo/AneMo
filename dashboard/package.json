@@ -1,0 +1,35 @@
+{
+  "name": "anemo-dashboard",
+  "version": "1.0.0",
+  "description": "Simple web dashboard for Anemo",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jspargo/AneMo.git"
+  },
+  "keywords": [
+    "nest",
+    "temperature",
+    "thermostat",
+    "smarthome",
+    "thermometer"
+  ],
+  "author": "Jack Spargo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jspargo/AneMo/issues"
+  },
+  "homepage": "https://github.com/jspargo/AneMo#readme",
+  "devDependencies": {
+    "webpack": "^1.12.9"
+  },
+  "dependencies": {
+    "babel-preset-react": "^6.1.18",
+    "babelify": "^7.2.0",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3"
+  }
+}
