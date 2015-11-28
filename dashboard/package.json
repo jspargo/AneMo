@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/jspargo/AneMo#readme",
   "devDependencies": {
+    "browserify": "^12.0.1",
+    "literalify": "^0.4.0",
     "webpack": "^1.12.9"
   },
   "dependencies": {
