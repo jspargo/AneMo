@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Use config file to read in keys and config settings
 config = ConfigParser.RawConfigParser()
 config.read('config.cfg')
-secretKey = config.get('anemoController', 'secret_key')
+secretKey = config.get('djangoSettings', 'secret_key')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
