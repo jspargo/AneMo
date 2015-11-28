@@ -17,13 +17,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Use config file to read in keys and config settings
 config = ConfigParser.ConfigParser()
 config.read('config.cfg')
-secretKey = config.get('djangoSettings', 'secret_key')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secretKey
+SECRET_KEY = config.get('djangoSettings', 'secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
