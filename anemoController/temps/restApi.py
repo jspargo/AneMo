@@ -14,5 +14,5 @@ class TempViewSet(viewsets.ModelViewSet):
 
 
 class LatestTempViewSet(viewsets.ModelViewSet):
-    queryset = RecordedTemp.objects.latest()
+    queryset = RecordedTemp.objects.latest('recorded_date')
     serializer_class = TempSerializer
