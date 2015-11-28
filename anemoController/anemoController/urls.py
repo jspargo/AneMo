@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin 
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
-from temps.restApi import TempSerializer, TempViewSet
+from temps.restApi import TempSerializer, TempViewSet, LatestTempViewSet
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -20,10 +20,12 @@ class UserViewSet(viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'temp', TempViewSet)
+router.register(r'latest', LatestTempViewSet)
 
 urlpatterns = patterns('',
-	url(r'^', include(router.urls)),
-    url(r'^temps/', include('temps.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+                       url(r'^', include(router.urls)),
+                       url(r'^temps/', include('temps.urls')),
+                       url(r'^admin/', include(admin.site.urls)),
+                       url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')
+                    ),
 )
