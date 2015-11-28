@@ -16,7 +16,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Use config file to read in keys and config settings
 config = ConfigParser.RawConfigParser()
-config.readfp('config.cfg')
+config_file = (os.path.join(os.getcwd(), 'config.cfg'))
+config.read('config_file')
 secretKey = config.get('djangoSettings', 'secret_key')
 
 # Quick-start development settings - unsuitable for production
