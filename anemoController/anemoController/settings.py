@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'temps',
 )
 
@@ -49,12 +50,14 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 )
 
 ROOT_URLCONF = 'anemoController.urls'
 
 WSGI_APPLICATION = 'anemoController.wsgi.application'
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -69,6 +72,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -90,6 +94,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # REST API configuration
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost'
+)
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions, or allow read-only access for 
