@@ -1,0 +1,10 @@
+{
+  "name": "Anemo Dashboard",
+  "description": "Dashboard for displaying and interacting with the AneMo interface",
+  "keywords": [ "react", "anemo", "thermostat", "nest", "hive" ],
+  "repository": "https://github.com/jspargo/anemo",
+  "logo": "https://facebook.github.io/react/img/logo.svg",
+  "website": "http://www.jackspargo.com",
+  "success_url": "/"
+}
+

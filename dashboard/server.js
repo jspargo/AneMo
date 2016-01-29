@@ -1,49 +1,77 @@
-import express from 'express';
-import http from 'http';
+/**
+ * This file provided by Facebook is for non-commercial testing and evaluation
+ * purposes only. Facebook reserves all rights not expressly granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { match, RoutingContext } from 'react-router';
+var fs = require('fs');
+var path = require('path');
+var express = require('express');
+var bodyParser = require('body-parser');
+var app = express();
 
-import AppComponent from './components/app';
-import IndexComponent from './components/index';
+var COMMENTS_FILE = path.join(__dirname, 'comments.json');
 
-import { routes } from './routes';
+app.set('port', (process.env.PORT || 3000));
 
-const app = express();
+app.use('/', express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(express.static('public'));
+// Additional middleware which will set headers that we need on each request.
+app.use(function(req, res, next) {
+    // Set permissive CORS header - this allows this server to be used only as
+    // an API server in conjunction with something like webpack-dev-server.
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
-app.set('view engine', 'ejs');
+    // Disable caching so we'll always get the latest comments.
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
+});
 
-app.get('*', (req, res) => {
-  // routes is our object of React routes defined above
-  match({ routes, location: req.url }, (err, redirectLocation, props) => {
+app.get('/api/comments', function(req, res) {
+  fs.readFile(COMMENTS_FILE, function(err, data) {
     if (err) {
-      // something went badly wrong, so 500 with a message
-      res.status(500).send(err.message);
-    } else if (redirectLocation) {
-      // we matched a ReactRouter redirect, so redirect from the server
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (props) {
-      // if we got props, that means we found a valid component to render
-      // for the given route
-      const markup = renderToString(<RoutingContext {...props} />);
-
-      // render `index.ejs`, but pass in the markup we want it to display
-      res.render('index', { markup })
-
-    } else {
-      // no route match, so 404. In a real app you might render a custom
-      // 404 view here
-      res.sendStatus(404);
+      console.error(err);
+      process.exit(1);
     }
+    res.json(JSON.parse(data));
   });
 });
 
-const server = http.createServer(app);
+app.post('/api/comments', function(req, res) {
+  fs.readFile(COMMENTS_FILE, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    var comments = JSON.parse(data);
+    // NOTE: In a real implementation, we would likely rely on a database or
+    // some other approach (e.g. UUIDs) to ensure a globally unique id. We'll
+    // treat Date.now() as unique-enough for our purposes.
+    var newComment = {
+      id: Date.now(),
+      author: req.body.author,
+      text: req.body.text,
+    };
+    comments.push(newComment);
+    fs.writeFile(COMMENTS_FILE, JSON.stringify(comments, null, 4), function(err) {
+      if (err) {
+        console.error(err);
+        process.exit(1);
+      }
+      res.json(comments);
+    });
+  });
+});
 
-server.listen(3003);
-server.on('listening', () => {
-  console.log('Listening on 3003');
+
+app.listen(app.get('port'), function() {
+  console.log('Server started: http://localhost:' + app.get('port') + '/');
 });
