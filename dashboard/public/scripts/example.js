@@ -5,7 +5,7 @@
 // Based on tutorial - https://facebook.github.io/react/tips/initial-ajax.html
 
 
-var Comment = React.createClass({
+var TempReading = React.createClass({
   rawMarkup: function() {
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return { __html: rawMarkup };
@@ -27,6 +27,9 @@ var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
       url: this.props.url,
+      type: 'GET',
+      username: 'dashboard',
+      password: 'D4shb0ard',
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -47,7 +50,7 @@ var CommentBox = React.createClass({
   render: function() {
     return (
       <div className="commentBox">
-        <h1>Comments</h1>
+        <h1>AneMo</h1>
         <CommentList data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
@@ -55,13 +58,15 @@ var CommentBox = React.createClass({
   }
 });
 
+//var FormattedDate = ReactIntl.FormattedDate;
+
 var CommentList = React.createClass({
   render: function() {
-    var commentNodes = this.props.data.map(function(comment) {
+    var commentNodes = this.props.data.map(function(temp) {
       return (
-        <Comment author={comment.author} key={comment.id}>
-          {comment.text}
-        </Comment>
+        <TempReading recorded_date={temp.recorded_date} recorded_temp={temp.recorded_temp}>
+          {temp.recorded_date} - {temp.recorded_temp}
+        </TempReading>
       );
     });
     return (
@@ -74,20 +79,17 @@ var CommentList = React.createClass({
 
 var CommentForm = React.createClass({
   getInitialState: function() {
-    return {author: '', text: ''};
+    return {author: ''};
   },
   handleAuthorChange: function(e) {
     this.setState({author: e.target.value});
-  },
-  handleTextChange: function(e) {
-    this.setState({text: e.target.value});
   },
   render: function() {
     return (
       <form className="commentForm" onSubmit={this.handleSubmit}>
         <input
           type="text"
-          placeholder="Your name"
+          placeholder="Set Temp"
           value={this.state.author}
           onChange={this.handleAuthorChange}
         />
@@ -98,6 +100,6 @@ var CommentForm = React.createClass({
 });
 
 ReactDOM.render(
-  <CommentBox url="http://52.19.110.248:8000/temp/" pollInterval={2000} />,
+  <CommentBox url="http://52.19.110.248:8000/temp/" pollInterval={10000} />,
   document.getElementById('content')
 );
