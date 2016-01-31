@@ -1,5 +1,6 @@
 from temps.models import RecordedTemp, SetTemp
 from rest_framework import routers, serializers, viewsets
+import datetime
 
 
 class TempSerializer(serializers.HyperlinkedModelSerializer):
@@ -20,6 +21,7 @@ class GetLatestSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class GetLatestViewSet(viewsets.ModelViewSet):
-    #queryset = RecordedTemp.objects.latest()
-    queryset = RecordedTemp.objects.all()
+    # queryset = RecordedTemp.objects.latest()
+    five_mins_ago = datetime.datetime.now() - datetime.timedelta(minutes=5)
+    queryset = RecordedTemp.objects.filter(recorded_date__gte=five_mins_ago)
     serializer_class = GetLatestSerializer
