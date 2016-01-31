@@ -9,6 +9,14 @@ body {
   padding: 30px;
 }
 
+#time {
+  font-size: 42pt;
+}
+
+#temp {
+  font-size: 96pt;
+}
+
 a {
   color: #4183c4;
   text-decoration: none;

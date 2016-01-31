@@ -11,14 +11,31 @@ var TempReading = React.createClass({
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return { __html: rawMarkup };
   },
-
   render: function() {
     return (
       <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.temp}
-        </h2>
         <span dangerouslySetInnerHTML={this.rawMarkup()} />
+      </div>
+    );
+  }
+});
+
+var ThermostatDisplay = React.createClass({
+  timeForDisplay: function() {
+    var hour = this.props.children[0].toString();
+    var minute = this.props.children[1].toString();
+    var timeStr = hour.concat(":", minute)
+    return {__html: timeStr};
+  },
+  tempForDisplay: function() {
+    var results = this.props.children[2];
+    return {__html: results};  
+  },
+  render: function() {
+    return (
+      <div className="time">
+        <p id="time" dangerouslySetInnerHTML={this.timeForDisplay()} />
+        <p id="temp" dangerouslySetInnerHTML={this.tempForDisplay()} />
       </div>
     );
   }
@@ -49,6 +66,8 @@ var CommentBox = React.createClass({
   render: function() {
     return (
       <div className="commentBox">
+        <h1>AneMo</h1>
+        <Thermostat data={this.state.data} />
         <h1>Data</h1>
         <Temp data={this.state.data} />
         <SetTempForm onCommentSubmit={this.handleTempChange} />
@@ -57,19 +76,35 @@ var CommentBox = React.createClass({
   }
 });
 
-//var FormattedDate = ReactIntl.FormattedDate;
+var Thermostat = React.createClass({
+  render: function() {
+    var length = this.props.data.length - 1
+    var tempNodes = this.props.data.map(function(temp) {
+      var date = new Date((temp.recorded_date || "").replace(/-/g,"/").replace(/[TZ]/g," "))
+      var hourStr = date.getHours()
+      var minuteStr = date.getMinutes()
+
+      return (
+        <ThermostatDisplay recorded_date={temp.recorded_date} recorded_temp={temp.recorded_temp}>
+          {hourStr}{minuteStr}{temp.recorded_temp}
+        </ThermostatDisplay>
+      );
+    });
+    return (
+      <div className="commentList">
+        {tempNodes[length]}
+      </div>
+    );
+  }
+});
 
 var Temp = React.createClass({
   render: function() {
     var tempNodes = this.props.data.map(function(temp) {
-      console.log(temp)
       var date = new Date((temp.recorded_date || "").replace(/-/g,"/").replace(/[TZ]/g," "))
-      console.log(monthNames[date.getMonth()])
-      console.log(date.getDate())
-
       return (
-        <TempReading recorded_date={temp.recorded_date} recorded_temp={temp.recorded_temp}>
-          {temp.recorded_date} - <h2>{date}</h2>- {temp.recorded_temp}
+        <TempReading recorded_date={date} recorded_temp={temp.recorded_temp}>
+          {date} - {temp.recorded_temp}
         </TempReading>
       );
     });
