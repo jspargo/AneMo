@@ -22,12 +22,11 @@ class UserViewSet(viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'temp', TempViewSet)
-router.register(r'getlatest', GetLatestViewSet)
+router.register(r'latest', GetLatestViewSet)
 
 urlpatterns = patterns('',
                        url(r'^', include(router.urls)),
                        url(r'^temps/', include('temps.urls')),
-                       url(r'^getlates/', include('temps.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
                        )

@@ -20,5 +20,6 @@ class GetLatestSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class GetLatestViewSet(viewsets.ModelViewSet):
-    queryset = RecordedTemp.objects.latest('recorded_date')
+    #queryset = RecordedTemp.objects.latest()
+    queryset = RecordedTemp.objects.all()
     serializer_class = GetLatestSerializer
