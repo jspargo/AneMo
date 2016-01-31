@@ -11,3 +11,8 @@ class TempSerializer(serializers.HyperlinkedModelSerializer):
 class TempViewSet(viewsets.ModelViewSet):
 	queryset = RecordedTemp.objects.all()
 	serializer_class = TempSerializer
+
+
+class GetLatestViewSet(viewsets.ModelViewSet):
+	queryset = RecordedTemp.objects.all()
+	serializer_class = TempSerializer
