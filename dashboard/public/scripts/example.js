@@ -28,8 +28,6 @@ var CommentBox = React.createClass({
     $.ajax({
       url: this.props.url,
       type: 'GET',
-      username: 'dashboard',
-      password: 'D4shb0ard',
       dataType: 'json',
       cache: false,
       success: function(data) {
