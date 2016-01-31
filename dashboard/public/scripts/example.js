@@ -4,6 +4,7 @@
 // Built using React - https://facebook.github.io/
 // Based on tutorial - https://facebook.github.io/react/tips/initial-ajax.html
 
+var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 var TempReading = React.createClass({
   rawMarkup: function() {
@@ -15,7 +16,7 @@ var TempReading = React.createClass({
     return (
       <div className="comment">
         <h2 className="commentAuthor">
-          {this.props.author}
+          {this.props.temp}
         </h2>
         <span dangerouslySetInnerHTML={this.rawMarkup()} />
       </div>
@@ -48,9 +49,9 @@ var CommentBox = React.createClass({
   render: function() {
     return (
       <div className="commentBox">
-        <h1>AneMo</h1>
-        <CommentList data={this.state.data} />
-        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+        <h1>Data</h1>
+        <Temp data={this.state.data} />
+        <SetTempForm onCommentSubmit={this.handleTempChange} />
       </div>
     );
   }
@@ -58,29 +59,34 @@ var CommentBox = React.createClass({
 
 //var FormattedDate = ReactIntl.FormattedDate;
 
-var CommentList = React.createClass({
+var Temp = React.createClass({
   render: function() {
-    var commentNodes = this.props.data.map(function(temp) {
+    var tempNodes = this.props.data.map(function(temp) {
+      console.log(temp)
+      var date = new Date((temp.recorded_date || "").replace(/-/g,"/").replace(/[TZ]/g," "))
+      console.log(monthNames[date.getMonth()])
+      console.log(date.getDate())
+
       return (
         <TempReading recorded_date={temp.recorded_date} recorded_temp={temp.recorded_temp}>
-          {temp.recorded_date} - {temp.recorded_temp}
+          {temp.recorded_date} - <h2>{date}</h2>- {temp.recorded_temp}
         </TempReading>
       );
     });
     return (
       <div className="commentList">
-        {commentNodes}
+        {tempNodes}
       </div>
     );
   }
 });
 
-var CommentForm = React.createClass({
+var SetTempForm = React.createClass({
   getInitialState: function() {
-    return {author: ''};
+    return {recorded_temp: ''};
   },
-  handleAuthorChange: function(e) {
-    this.setState({author: e.target.value});
+  handleTempChange: function(e) {
+    this.setState({recorded_temp: e.target.value});
   },
   render: function() {
     return (
@@ -88,8 +94,8 @@ var CommentForm = React.createClass({
         <input
           type="text"
           placeholder="Set Temp"
-          value={this.state.author}
-          onChange={this.handleAuthorChange}
+          value={this.state.recorded_temp}
+          onChange={this.handleTempChange}
         />
         <input type="submit" value="Post" />
       </form>
@@ -98,6 +104,6 @@ var CommentForm = React.createClass({
 });
 
 ReactDOM.render(
-  <CommentBox url="http://52.19.110.248:8000/temp/" pollInterval={10000} />,
+  <CommentBox url="http://52.19.110.248:8000/latest/" pollInterval={30000} />,
   document.getElementById('content')
 );
