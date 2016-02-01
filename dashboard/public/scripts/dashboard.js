@@ -33,9 +33,19 @@ var ThermostatDisplay = React.createClass({
   },
   render: function() {
     return (
-      <div className="time">
+      <div className="container">
         <p id="time" dangerouslySetInnerHTML={this.timeForDisplay()} />
-        <p id="temp" dangerouslySetInnerHTML={this.tempForDisplay()} />
+        <div className="temp-container">
+          <div className="item html">
+            <p id="temp" dangerouslySetInnerHTML={this.tempForDisplay()} />
+            <svg width="380" height="380" xmlns="http://www.w3.org/2000/svg">
+              <g>
+                <title>Temp</title>
+                <circle id="circle" className="circle_animation" r="159.85699" cy="183" cx="181" strokeWidth="28" stroke="#6fdb6f" fill="none"/>
+              </g>
+            </svg>
+          </div>
+        </div>
       </div>
     );
   }

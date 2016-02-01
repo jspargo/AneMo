@@ -9,11 +9,27 @@ body {
   padding: 30px;
 }
 
+.container {
+  display: block;
+  float: left;
+  text-align: center;
+  width: 100%;
+}
+
 #time {
   font-size: 42pt;
+  float: left;
+  text-align: center;
+  width: 100%;
+}
+
+.temp-container {
+  display: inline-block;
 }
 
 #temp {
+  display: block;
+  position: absolute;
   font-size: 96pt;
 }
 
