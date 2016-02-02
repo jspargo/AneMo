@@ -31,10 +31,11 @@ body {
   display: block;
   position: absolute;
   font-size: 96pt;
+  width: 100%;
 }
 
 a {
-  color: #4183c4;
+  color: #fff;
   text-decoration: none;
 }
 

@@ -1,43 +1,61 @@
-.item {
-    position: relative;
-    float: left;
+.pie {
+  position: relative;
+  width: 380px;
+  height: 380px;
+  margin: 0 auto;
+}
+.pie .master {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 100%;
+}
+.pie .slice {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 100%;
+  clip: rect(0px, 300px, 300px, 150px);
+}
+.pie .inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 100%;
+  clip: rect(0px, 150px, 300px, 0px);
+}
+.pie .cover {
+  background: #555;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  bottom: 16px;
+  right: 16px;
+  border-radius: 100%;
 }
 
-.item h2 {
-    text-align:center;
-    position: absolute;
-    line-height: 125px;
-    width: 100%;
+a {
+  display: block;
 }
 
-svg {
-    transform: rotate(-90deg);
+.content {
+  padding-top: 42px;
+  text-align: center;
+}
+.content h2 {
+  font-weight: lighter;
+  color: #fff;
 }
 
-.circle_animation {
-  stroke-dasharray: 440;
-  stroke-dashoffset: 440;
-  stroke-width: 44px;
+.blue .master {
+  background: #b4da55;
 }
-
-.html .circle_animation {
-    -webkit-animation: html 1s ease-out forwards;
-    animation: html 1s ease-out forwards;
-}
-
-.css .circle_animation {
-    -webkit-animation: css 1s ease-out forwards;
-    animation: css 1s ease-out forwards;
-}
-
-@-webkit-keyframes html {
-  to {
-    stroke-dashoffset: 180;
-  }
-}
-
-@keyframes html {
-  to {
-    stroke-dashoffset: 180;
-  }
+.blue .inner {
+  background: #fff;
 }

@@ -31,20 +31,27 @@ var ThermostatDisplay = React.createClass({
     var results = this.props.children[2];
     return {__html: results};  
   },
+  tempAsDouble: function() {
+    var result = this.props.children[2];
+    return result;  
+  },
   render: function() {
     return (
       <div className="container">
         <p id="time" dangerouslySetInnerHTML={this.timeForDisplay()} />
         <div className="temp-container">
-          <div className="item html">
-            <p id="temp" dangerouslySetInnerHTML={this.tempForDisplay()} />
-            <svg width="380" height="380" xmlns="http://www.w3.org/2000/svg">
-              <g>
-                <title>Temp</title>
-                <circle id="circle" className="circle_animation" r="159.85699" cy="183" cx="181" strokeWidth="28" stroke="#6fdb6f" fill="none"/>
-              </g>
-            </svg>
-          </div>
+          <figure className="pie blue" data-pie="45">
+           <div className="master"></div>
+           <div className="slice"><div className="inner"></div></div>
+           <a href="#">
+             <div className="cover">
+              <div className="content">
+                <p id="temp" dangerouslySetInnerHTML={this.tempForDisplay()} />
+                <span><i className="icon-plus"></i></span>
+              </div>
+             </div>
+           </a>
+          </figure>
         </div>
       </div>
     );

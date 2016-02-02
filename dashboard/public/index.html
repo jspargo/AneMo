@@ -14,11 +14,21 @@
   </head>
   <body>
     <div id="thermostat"></div>
-    <div id="thermostat-circle" data-percent="66"></div>
     <div id="content"></div>
     <script type="text/babel" src="scripts/dashboard.js"></script>
     <script type="text/javascript">
-      $('#thermostat-circle').percentcircle();
+      $(document).ready(function() {
+        var pies = $('figure.pie');
+        $.each(pies, function() {
+          var degree = $(this).attr('data-pie');
+          $(this).children('.slice').children('.inner').css({
+            '-webkit-transform': 'rotate(' + degree + 'deg)',
+            '-moz-transform': 'rotate(' + degree + 'deg)',
+            '-o-transform': 'rotate(' + degree + 'deg)',
+            'transform': 'rotate(' + degree + 'deg)',
+          });
+        });
+      });
     </script>
   </body>
 </html>
