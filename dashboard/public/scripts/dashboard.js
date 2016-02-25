@@ -98,8 +98,8 @@ var Thermostat = React.createClass({
     var length = this.props.data.length - 1
     var tempNodes = this.props.data.map(function(temp) {
       var date = new Date((temp.recorded_date || "").replace(/-/g,"/").replace(/[TZ]/g," "))
-      var hourStr = date.getHours()
-      var minuteStr = date.getMinutes()
+      var hourStr = ("0" + date.getHours()).slice(-2)
+      var minuteStr = ("0" + date.getMinutes()).slice(-2)
 
       return (
         <ThermostatDisplay recorded_date={temp.recorded_date} recorded_temp={temp.recorded_temp}>
