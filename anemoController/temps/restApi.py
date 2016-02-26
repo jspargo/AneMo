@@ -21,9 +21,7 @@ class GetLatestSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('recorded_temp', 'recorded_date')
 
 class GetLatestViewSet(viewsets.ModelViewSet):
-    # queryset = RecordedTemp.objects.latest()
-    five_mins_ago = datetime.datetime.now() - datetime.timedelta(minutes=5)
-    queryset = RecordedTemp.objects.filter(recorded_date__gte=five_mins_ago)
+    queryset = RecordedTemp.objects.order_by('-recorded_date')[:1]
     serializer_class = GetLatestSerializer
 
 
