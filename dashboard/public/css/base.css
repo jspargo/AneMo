@@ -2,7 +2,7 @@ body {
   background: #555;
   text-align: center;
   color: #fff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Questrial', Helvetica, Arial, sans-serif;
   font-size: 15px;
   line-height: 1.7;
   margin: 0;
@@ -30,8 +30,10 @@ body {
 #temp {
   display: block;
   position: absolute;
-  font-size: 96pt;
+  font-size: 108pt;
   width: 100%;
+  letter-spacing: -6px;
+  font-family: 'Istok Web', sans-serif; /* 'Fira Sans', 'Amaranth', 'Istok Web', 'Questrial'*/
 }
 
 a {
