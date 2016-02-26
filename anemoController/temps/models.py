@@ -26,7 +26,7 @@ class RecordedTemp(models.Model):
         return u'%f -- %s' % (temp, date)
 
     def was_recorded_today(self):
-        return self.recorded_date >= timezone.now() - datetime.timedelta(days=1)
+        return self.recorded_date.date() >= timezone.now() - datetime.timedelta(days=1)
 
 
 class SetTemp(models.Model):
