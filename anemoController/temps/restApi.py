@@ -25,3 +25,14 @@ class GetLatestViewSet(viewsets.ModelViewSet):
     five_mins_ago = datetime.datetime.now() - datetime.timedelta(minutes=5)
     queryset = RecordedTemp.objects.filter(recorded_date__gte=five_mins_ago)
     serializer_class = GetLatestSerializer
+
+
+class SetTempSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SetTemp
+        fields = ('set_temp_low', 'set_temp_high', 'set_date')
+
+
+class SetTempViewSet(viewsets.ModelViewSet):
+    queryset = SetTemp.objects.all()
+    serializer_class = SetTempSerializer
