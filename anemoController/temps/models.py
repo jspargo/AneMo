@@ -11,6 +11,7 @@ class RecordedTemp(models.Model):
 
     class Meta:
         get_latest_by = 'recorded_date'
+        ordering = ['-recorded_date']
 
     def __unicode__(self):
         temp = float(self.recorded_temp)
@@ -28,6 +29,7 @@ class SetTemp(models.Model):
 
     class Meta:
         get_latest_by = 'set_date'
+        ordering = ['-set_date']
 
     def __unicode__(self):
         temp_low = float(self.set_temp_low)
