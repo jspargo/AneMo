@@ -46,5 +46,5 @@ class GetStateSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('state_date', 'return_state', 'override_state', 'recorded_temp', 'requested_temp')
 
 class GetStateViewSet(viewsets.ModelViewSet):
-    queryset = TempManager.objects.all()
     serializer_class = GetStateSerializer
+    queryset = TempManager.objects.all()

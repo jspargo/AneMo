@@ -51,14 +51,12 @@ class TempManager(models.Model):
 
     def calculate_state_logic(self):
         "Using Temps and Dates, establish logic state to return"
-        return False
-        # import datetime
-        # if self.birth_date < datetime.date(1945, 8, 1):
-        #     return "Pre-boomer"
-        # elif self.birth_date < datetime.date(1965, 1, 1):
-        #     return "Baby boomer"
-        # else:
-        #     return "Post-boomer"
+        if self.recorded_temp < self.requested_temp:
+            logging.warning('%f is less than %f - heating state set to ON', self.recorded_temp, self.requested_temp)
+            return True
+        else:
+            logging.warning('%f is greater than %f - heating state set to OFF', self.recorded_temp, self.requested_temp)
+            return False
 
     def _get_state_to_return(self):
         "Returns state (overridden or logic)"
@@ -69,17 +67,17 @@ class TempManager(models.Model):
 
     def _get_latest_temp(self):
         latest_temp = RecordedTemp.objects.latest().recorded_temp
-        logging.warning(latest_temp)
+        #logging.warning('Latest Recorded Temp: %f', latest_temp)
         return latest_temp
 
     def _get_latest_set_temp(self):
         latest_set_temp = SetTemp.objects.latest().set_temp_high
-        logging.warning(latest_set_temp)
+        #logging.warning('Requested Temp: %f', latest_set_temp)
         return latest_set_temp
 
-    return_state = property(_get_state_to_return)
     recorded_temp = property(_get_latest_temp)
     requested_temp = property(_get_latest_set_temp)
+    return_state = property(_get_state_to_return)
 
     class Meta:
         ordering = ['-state_date']
