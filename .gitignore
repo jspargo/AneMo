@@ -2,3 +2,5 @@
 thermo/config.cfg
 dashboard/node_modules
 django/lib/python2.7/dist-packages
+receiver/node_modules
+receiver/lib

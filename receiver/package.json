@@ -1,0 +1,35 @@
+{
+  "name": "anemo-receiver",
+  "version": "0.1.0",
+  "description": "The Receiver code for the Anemo project. This app will poll the 'state' endpoint (a REST API) and act on the result it receives (e.g. activate the relay that sends the command to the thermostat wall unit)",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src -d lib",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jspargo/AneMo.git"
+  },
+  "keywords": [
+    "Thermostat",
+    "IoT",
+    "Nest",
+    "Hive",
+    "Smart",
+    "Home"
+  ],
+  "author": "Jack Spargo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jspargo/AneMo/issues"
+  },
+  "homepage": "https://github.com/jspargo/AneMo#readme",
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-core": "^6.22.1",
+    "babel-preset-es2015": "^6.22.0",
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1"
+  }
+}
