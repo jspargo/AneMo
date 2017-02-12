@@ -1,21 +1,13 @@
 from django.db import models
 
 import json, datetime
+import logging
 
 # Create your models here.
-
-
-class TempManager(models.Manager):
-    def current_temp_within_range(self):
-        #TODO: here we will compare latest recorded temp with set temps
-        return True
-
 
 class RecordedTemp(models.Model):
     recorded_temp = models.DecimalField(max_digits=5, decimal_places=2)
     recorded_date = models.DateTimeField('date recorded')
-
-    objects = TempManager()
 
     class Meta:
         get_latest_by = 'recorded_date'
@@ -23,7 +15,7 @@ class RecordedTemp(models.Model):
     def __unicode__(self):
         temp = float(self.recorded_temp)
         date = str(self.recorded_date)
-        return u'%f -- %s' % (temp, date)
+        return u'%f' % (temp)
 
     def was_recorded_today(self):
         return self.recorded_date >= timezone.now() - datetime.timedelta(days=1)
@@ -33,6 +25,9 @@ class SetTemp(models.Model):
     set_temp_low = models.DecimalField(max_digits=5, decimal_places=2)
     set_temp_high = models.DecimalField(max_digits=5, decimal_places=2)
     set_date = models.DateTimeField('date set')
+
+    class Meta:
+        get_latest_by = 'set_date'
 
     def __unicode__(self):
         temp_low = float(self.set_temp_low)
@@ -45,3 +40,53 @@ class TimeConversion(str):
     def __str__(self):
         output = datetime.datetime.strptime(self, '%a, %d %b %Y %H:%M:%S GMT').strftime('%Y-%m-%d')
         return output
+
+
+class TempManager(models.Model):
+    recorded_temp = models.DecimalField(max_digits=5, decimal_places=2)
+    requested_temp = models.DecimalField(max_digits=5, decimal_places=2)
+    logic_state = models.BooleanField(default=False)
+    override_state = models.BooleanField(default=False)
+    state_date = models.DateTimeField('state date')
+
+    def calculate_state_logic(self):
+        "Using Temps and Dates, establish logic state to return"
+        return False
+        # import datetime
+        # if self.birth_date < datetime.date(1945, 8, 1):
+        #     return "Pre-boomer"
+        # elif self.birth_date < datetime.date(1965, 1, 1):
+        #     return "Baby boomer"
+        # else:
+        #     return "Post-boomer"
+
+    def _get_state_to_return(self):
+        "Returns state (overridden or logic)"
+        if self.override_state is True:
+            return True
+        else:
+            return self.calculate_state_logic
+
+    def _get_latest_temp(self):
+        latest_temp = RecordedTemp.objects.latest().recorded_temp
+        logging.warning(latest_temp)
+        return latest_temp
+
+    def _get_latest_set_temp(self):
+        latest_set_temp = SetTemp.objects.latest().set_temp_high
+        logging.warning(latest_set_temp)
+        return latest_set_temp
+
+    return_state = property(_get_state_to_return)
+    recorded_temp = property(_get_latest_temp)
+    requested_temp = property(_get_latest_set_temp)
+
+    class Meta:
+        ordering = ['-state_date']
+
+    def __unicode__(self):
+        temp = float(self.recorded_temp)
+        date = str(self.state_date)
+        state = bool(self.return_state)
+
+        return u'%f so state is %b -- %s' % (temp, state, date)
