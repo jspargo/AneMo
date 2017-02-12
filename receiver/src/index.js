@@ -9,67 +9,53 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+const _ = require('lodash')
+const fs = require('fs')
+const path = require('path')
+const request = require('request')
+const rp = require('request-promise')
+const http = require('http')
+const https = require('https')
+const bodyParser = require('body-parser')
 
-var fs = require('fs');
-var path = require('path');
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
+const username = process.env.ANEMO_REC_USER
+const password = process.env.ANEMO_REC_PASSWORD
 
-var COMMENTS_FILE = path.join(__dirname, 'comments.json');
+const localUrl = 'http://localhost:8000'
+const remoteUrl = 'http://anemo.jackspargo.com'
+const auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
-app.set('port', (process.env.PORT || 3001));
-
-app.use('/', express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
-// Additional middleware which will set headers that we need on each request.
-app.use(function(req, res, next) {
-    // Set permissive CORS header - this allows this server to be used only as
-    // an API server in conjunction with something like webpack-dev-server.
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Cache-Control', 'no-cache');
-    next();
-});
-
-app.get('/api/comments', function(req, res) {
-  fs.readFile(COMMENTS_FILE, function(err, data) {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    res.json(JSON.parse(data));
-  });
-});
-
-app.post('/api/comments', function(req, res) {
-  fs.readFile(COMMENTS_FILE, function(err, data) {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    var comments = JSON.parse(data);
-    // NOTE: In a real implementation, we would likely rely on a database or
-    // some other approach (e.g. UUIDs) to ensure a globally unique id. We'll
-    // treat Date.now() as unique-enough for our purposes.
-    var newComment = {
-      id: Date.now(),
-      author: req.body.author,
-      text: req.body.text,
+var getContent = new Promise((resolve, reject) => {
+    // return new pending promise
+    const url = remoteUrl + '/state'
+    var options = {
+      uri: url,
+      headers: {
+          'Authorization': auth
+      },
+      json: true // Automatically parses the JSON string in the response
     };
-    comments.push(newComment);
-    fs.writeFile(COMMENTS_FILE, JSON.stringify(comments, null, 4), function(err) {
-      if (err) {
-        console.error(err);
-        process.exit(1);
-      }
-      res.json(comments);
-    });
-  });
-});
 
+    rp(options).then((response) => {
+      resolve(response)
+    }).catch((err) => {
+      reject(err)
+      console.error(err)
+    })
+})
 
-app.listen(app.get('port'), function() {
-  console.log('Server started: http://localhost:' + app.get('port') + '/');
-});
+var response = getContent
+  .then((body) => {
+    var stateBool = 0
+    const data = body[0].return_state
+    if (data === true) {
+      console.log('switching on')
+      stateBool = 1
+    } else {
+      console.log('switching off')
+      stateBool = 0
+    }
+    var spawn = require("child_process").spawn;
+    var process = spawn('python',["setRelayState.py", stateBool]);
+  })
+  .catch((error) => console.log(error))
