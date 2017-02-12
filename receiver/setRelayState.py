@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#import pifacedigitalio
+import pifacedigitalio
 import argparse
 
 parser = argparse.ArgumentParser(description='Process some integers.')
@@ -10,9 +10,9 @@ parser.add_argument('integers', metavar='S', type=int,
 arg = parser.parse_args().integers
 
 def change_relay_state(arg):
-    # pfd = pifacedigitalio.PiFaceDigital()
-    # pfd.relays[0].value = arg
-    # pfd.deinit_board()
+    pfd = pifacedigitalio.PiFaceDigital()
+    pfd.relays[0].value = arg
+    pfd.deinit_board()
     print arg
 
 if arg == 0:
