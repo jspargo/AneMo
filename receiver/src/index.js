@@ -56,6 +56,7 @@ var response = getContent
       stateBool = 0
     }
     var spawn = require("child_process").spawn;
-    var process = spawn('python',["setRelayState.py", stateBool]);
+    scriptPath = path.join(__dirname, 'setRelayState.py')
+    var process = spawn('python',[scriptPath, stateBool]);
   })
   .catch((error) => console.log(error))
