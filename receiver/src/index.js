@@ -40,10 +40,10 @@ var response = getContent
     var stateBool = 0
     const data = body[0].return_state
     if (data === true) {
-      console.log('switching on')
+      console.log(Date.now() + 'switching on')
       stateBool = 1
     } else {
-      console.log('switching off')
+      console.log(Date.now() + 'switching off')
       stateBool = 0
     }
     var spawn = require("child_process").spawn;
