@@ -35,15 +35,23 @@ var getContent = new Promise((resolve, reject) => {
     })
 })
 
+var currentdate = new Date();
+var datetime = "[" + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds() + "]";
+
 var response = getContent
   .then((body) => {
     var stateBool = 0
     const data = body[0].return_state
     if (data === true) {
-      console.log(Date.now() + 'switching on')
+      console.log(datetime + ' - switching on')
       stateBool = 1
     } else {
-      console.log(Date.now() + 'switching off')
+      console.log(datetime + ' - switching off')
       stateBool = 0
     }
     var spawn = require("child_process").spawn;
