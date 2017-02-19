@@ -54,8 +54,8 @@ function checkShouldChangeState(currentState) {
     .then((body) => {
       var stateBool = 0
       const data = body[0].return_state
-      if (data != currentState) {
-        console.log(data, currentState)
+      if (data.toString() !== currentState) {
+        console.log(data.toString(), currentState)
         if (data === true) {
           console.log(datetime + ' - switching on')
           stateBool = 1
