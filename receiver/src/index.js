@@ -42,7 +42,7 @@ var getContent = new Promise((resolve, reject) => {
     })
 })
 
-var currentState = fs.readFile('/tmp/anemoState.txt', (err, state) => {
+var currentState = fs.readFile('/tmp/anemoState.txt', 'utf-8', (err, state) => {
     if (err) {
         throw err
     }
