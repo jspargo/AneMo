@@ -50,12 +50,12 @@ var currentState = fs.readFile('/tmp/anemoState.txt', 'utf-8', (err, state) => {
 });
 
 function checkShouldChangeState(currentState) {
-  console.log(currentState)
   var response = getContent
     .then((body) => {
       var stateBool = 0
       const data = body[0].return_state
-      if (data !== currentState) {
+      if (data != currentState) {
+        console.log(data, currentState)
         if (data === true) {
           console.log(datetime + ' - switching on')
           stateBool = 1
