@@ -16,6 +16,13 @@ const localUrl = 'http://localhost:8000'
 const remoteUrl = 'http://anemo.jackspargo.com'
 const auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
+var currentdate = new Date();
+var datetime = "[" + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + "]";
+
 var getContent = new Promise((resolve, reject) => {
     // return new pending promise
     const url = remoteUrl + '/state'
@@ -35,27 +42,32 @@ var getContent = new Promise((resolve, reject) => {
     })
 })
 
-var currentdate = new Date();
-var datetime = "[" + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/"
-                + currentdate.getFullYear() + " @ "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + "]";
-
-var response = getContent
-  .then((body) => {
-    var stateBool = 0
-    const data = body[0].return_state
-    fs.writeFile("/tmp/anemoState.txt", data)
-    if (data === true) {
-      console.log(datetime + ' - switching on')
-      stateBool = 1
-    } else {
-      console.log(datetime + ' - switching off')
-      stateBool = 0
+var currentState = fs.readFile('/tmp/anemoState.txt', (err, state) => {
+    if (err) {
+        throw err
     }
-    var spawn = require("child_process").spawn
-    scriptPath = path.join(__dirname, '../setRelayState.py')
-    var process = spawn('python',[scriptPath, stateBool]);
-  })
-  .catch((error) => console.log(error))
+    console.log(state);
+
+    
+    var response = getContent
+      .then((body) => {
+        var stateBool = 0
+        const data = body[0].return_state
+        if (data === true) {
+          console.log(datetime + ' - switching on')
+          stateBool = 1
+        } else {
+          console.log(datetime + ' - switching off')
+          stateBool = 0
+        }
+        var spawn = require("child_process").spawn
+        scriptPath = path.join(__dirname, '../setRelayState.py')
+        var process = spawn('python',[scriptPath, stateBool])
+        fs.writeFile('/tmp/anemoState.txt', data, (data, error) => {
+          if (error) {
+            console.log('Error writing to file');
+          }
+        })
+      })
+      .catch((error) => console.log(error))
+});
