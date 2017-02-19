@@ -47,6 +47,7 @@ var response = getContent
   .then((body) => {
     var stateBool = 0
     const data = body[0].return_state
+    fs.writeFile("/tmp/anemoState.txt", data)
     if (data === true) {
       console.log(datetime + ' - switching on')
       stateBool = 1
@@ -54,7 +55,7 @@ var response = getContent
       console.log(datetime + ' - switching off')
       stateBool = 0
     }
-    var spawn = require("child_process").spawn;
+    var spawn = require("child_process").spawn
     scriptPath = path.join(__dirname, '../setRelayState.py')
     var process = spawn('python',[scriptPath, stateBool]);
   })
