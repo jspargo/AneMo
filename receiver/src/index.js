@@ -46,28 +46,30 @@ var currentState = fs.readFile('/tmp/anemoState.txt', (err, state) => {
     if (err) {
         throw err
     }
-    console.log(state);
-
-    
-    var response = getContent
-      .then((body) => {
-        var stateBool = 0
-        const data = body[0].return_state
-        if (data === true) {
-          console.log(datetime + ' - switching on')
-          stateBool = 1
-        } else {
-          console.log(datetime + ' - switching off')
-          stateBool = 0
-        }
-        var spawn = require("child_process").spawn
-        scriptPath = path.join(__dirname, '../setRelayState.py')
-        var process = spawn('python',[scriptPath, stateBool])
-        fs.writeFile('/tmp/anemoState.txt', data, (data, error) => {
-          if (error) {
-            console.log('Error writing to file');
-          }
-        })
-      })
-      .catch((error) => console.log(error))
+    checkShouldChangeState(state)
 });
+
+function checkShouldChangeState(currentState) {
+  console.log(currentState)
+  var response = getContent
+    .then((body) => {
+      var stateBool = 0
+      const data = body[0].return_state
+      if (data === true) {
+        console.log(datetime + ' - switching on')
+        stateBool = 1
+      } else {
+        console.log(datetime + ' - switching off')
+        stateBool = 0
+      }
+      var spawn = require("child_process").spawn
+      scriptPath = path.join(__dirname, '../setRelayState.py')
+      var process = spawn('python',[scriptPath, stateBool])
+      fs.writeFile('/tmp/anemoState.txt', data, (data, error) => {
+        if (error) {
+          console.log('Error writing to file');
+        }
+      })
+    })
+    .catch((error) => console.log(error))
+}
