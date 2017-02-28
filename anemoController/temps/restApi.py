@@ -1,4 +1,4 @@
-from temps.models import RecordedTemp, SetTemp, TempManager
+from temps.models import RecordedTemp, SetTemp, TempManager, SetTimes
 from rest_framework import routers, serializers, viewsets
 import datetime
 
@@ -46,3 +46,14 @@ class GetStateSerializer(serializers.HyperlinkedModelSerializer):
 class GetStateViewSet(viewsets.ModelViewSet):
     serializer_class = GetStateSerializer
     queryset = TempManager.objects.all()
+
+
+# Thermostate Set (Times) Endpoint
+class SetTimesSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SetTimes
+        fields = ('time_set_date', 'set_first_time', 'set_second_time', 'set_third_time', 'set_fourth_time')
+
+class SetTimeViewSet(viewsets.ModelViewSet):
+    queryset = SetTimes.objects.all()
+    serializer_class = SetTimesSerializer

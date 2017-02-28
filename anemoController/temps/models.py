@@ -90,3 +90,21 @@ class TempManager(models.Model):
         state = bool(self.return_state)
 
         return u'%f so state is %b -- %s' % (temp, state, date)
+
+
+class SetTimes(models.Model):
+    time_set_date = models.DateTimeField('date time set')
+    set_first_time= models.DateTimeField('morning on time')
+    set_second_time = models.DateTimeField('morning off time')
+    set_third_time = models.DateTimeField('afternoon on time')
+    set_fourth_time = models.DateTimeField('afternoon off time')
+
+    class Meta:
+        get_latest_by = 'time_set_date'
+        ordering = ['-time_set_date']
+
+    def __unicode__(self):
+        temp_low = float(self.set_temp_low)
+        temp_high = float(self.set_temp_high)
+        date = str(self.set_date)
+        return u'%f to %f -- %s' % (temp_low, temp_high, date)

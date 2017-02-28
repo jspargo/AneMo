@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
-from temps.restApi import TempViewSet, GetLatestViewSet, SetTempViewSet, GetStateViewSet
+from temps.restApi import TempViewSet, GetLatestViewSet, SetTempViewSet, GetStateViewSet, SetTimeViewSet
 
 
 # Serializers define the API representation.
@@ -25,6 +25,7 @@ router.register(r'temp', TempViewSet)
 router.register(r'latest', GetLatestViewSet)
 router.register(r'set', SetTempViewSet)
 router.register(r'state', GetStateViewSet)
+router.register(r'times', SetTimeViewSet)
 
 
 urlpatterns = patterns('',
