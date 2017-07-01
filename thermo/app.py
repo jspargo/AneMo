@@ -21,12 +21,11 @@ def index():
 @app.route('/record/')
 def temp():
     url = config.get('anemoController', 'url')
-    port = config.get('anemoController', 'port')
-    django_url = str(url + ':' + port + '/temps/')
+    django_url = str(url + '/temps/')
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     tdata = {'time': timestamp, 'temperature': currentTemp().record_temp()}
     tbody = json.dumps(tdata)
-    headers = {'Content-type': 'application/json'}
+    headers = {'Content-type': 'application/json', 'Authorization': 'Basic amFjazpzcGFyODdnbw=='}
     try:
         r = requests.post(django_url, data=tbody, headers=headers) 
         if r.raise_for_status() is None:
