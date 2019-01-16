@@ -1,0 +1,14 @@
+{
+  "name": "lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+   "alexa": "node -e 'require(\"./index.js\").testAlexa()'"
+  }
+}
