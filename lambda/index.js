@@ -13,7 +13,8 @@ var languageStrings = {
       "SKILL_NAME" : "Anemo Thermostat",
       "TEMP_MESSAGE" : "The current temperature is ",
       "STATE_MESSAGE" : "The heating is currently ",
-      "OVERRIDE_MESSAGE_ON" : "OK, I'll turn the heating on for you for one hour. Just let me know if you need me to turn it off again",
+      "OVERRIDE_MESSAGE_ON_1" : "OK, I'll turn the heating on for you for ",
+      "OVERRIDE_MESSAGE_ON_2" : " minutes. Just let me know if you need me to turn it off again",
       "OVERRIDE_MESSAGE_OFF" : "No problem. I've turned the heating off for you",
       "HELP_MESSAGE" : "You can ask me what the current temperature is, or override the heating now, if you're cold.",
       "HELP_REPROMPT" : "What can I help you with?",
@@ -47,13 +48,15 @@ const handlers = {
     });
   },
   'SetStateOn': function () {
-    httpsPost('on', (response) => {
-      const speechOutput = this.t('OVERRIDE_MESSAGE_ON');
+    let seconds = toSeconds(this.event.request.intent.slots.Duration.value);
+    let minutes = seconds / 60
+    httpsPost('on', seconds.toString(), (response) => {
+      const speechOutput = this.t('OVERRIDE_MESSAGE_ON_1') + minutes.toString() + this.t('OVERRIDE_MESSAGE_ON_2');
       this.emit(':tellWithCard', speechOutput, this.t('SKILL_NAME'), speechOutput);
     });
   },
   'SetStateOff': function () {
-    httpsPost('off', (response) => {
+    httpsPost('off', '3600', (response) => {
       const speechOutput = this.t('OVERRIDE_MESSAGE_OFF');
       this.emit(':tellWithCard', speechOutput, this.t('SKILL_NAME'), speechOutput);
     });
@@ -121,10 +124,10 @@ function httpsGet(callback) {
   });
 }
 
-function httpsPost(state, callback) {
+function httpsPost(state, duration, callback) {
   var postOptions = options;
   postOptions.method = 'PUT';
-  postOptions.path += '?override=' + state + '&duration=3600'
+  postOptions.path += '?override=' + state + '&duration=' + duration
 
   var req = https.request(options, function(res) {
     console.log('STATUS: ' + res.statusCode);
@@ -144,4 +147,14 @@ function httpsPost(state, callback) {
   req.write('data\n');
   req.write('data\n');
   req.end();
+}
+
+function toSeconds(durationValue) {
+  let arr = durationValue.split(/(\d+)/);
+  var mins = arr[arr.length - 2];
+  var hours = 0
+  if (arr.length > 3 ) {
+    hours = arr[arr.length - 4];
+  }
+  return (hours * 3600) + (mins * 60);
 }
