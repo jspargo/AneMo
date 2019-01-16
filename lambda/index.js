@@ -127,11 +127,9 @@ function httpsGet(callback) {
 function httpsPost(state, duration, callback) {
   var postOptions = options;
   postOptions.method = 'PUT';
-  postOptions.path += '?override=' + state + '&duration=' + duration
+  postOptions.path = '/v2/state?override=' + state + '&duration=' + duration
 
-  var req = https.request(options, function(res) {
-    console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers));
+  var req = https.request(postOptions, function(res) {
     res.setEncoding('utf8');
     res.on('data', function (chunk) {
       console.log('BODY: ' + chunk);
